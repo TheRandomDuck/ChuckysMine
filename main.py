@@ -3,8 +3,7 @@ import random
 
 hint = """hint: deepness makes it harder to mine,
 but the ores are more valuable"""
-hint2 = "subscribe to RandomDuckGuy and comment mining gam on Youtube (my minecraft channel) for extra perks"
-hint3 = """mine diamond, dimond gud, dimaonf cul,
+hint2 = """mine diamond, dimond gud, dimaonf cul,
  diaomnfd shiny ehehHEHehhEHHEEHEHEH EEEEEGEGEGEHEHEHEGE"""
 money = 0
 ores = []
@@ -165,7 +164,9 @@ while True:
                 print("You don't have enough money.")
         elif choice == "8":
             if money >= 5000:
-                print(hint3)
+                print(hint2)
+                time.sleep(1)
+                print(hint)
                 print("I mean, you bought it, so like don't complain")
             else:
                 print("You don't have enough money.")
