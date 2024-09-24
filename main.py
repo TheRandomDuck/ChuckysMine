@@ -6,10 +6,7 @@ but the ores are more valuable"""
 hint2 = """mine diamond, dimond gud, dimaonf cul,
  diaomnfd shiny ehehHEHehhEHHEEHEHEH EEEEEGEGEGEHEHEHEGE"""
 
-lucky_charm = False
-auto_miner = False
-mining_time = 3
-deepness = 0  # Initialize deepness
+
 
 def intro():
     print("""chucky >> welcome! this is chucky's mine!
@@ -19,57 +16,85 @@ def intro():
 def print_ores(ores_array):
     return ', '.join(ores_array) if ores_array else "No ores"
 
-def mine(user_ores, tank):
-    randomv = random.randint(1, 7)
+def mine(user_ores, tank=1, lucky_charm=False):
+    random_ore = random.randint(1, 7)
     ore_found = ""
-    if randomv == 1:
+    if random_ore == 1:
         ore_found = "stone"
-    elif randomv == 2:
+    elif random_ore == 2:
         ore_found = "coal"
-    elif randomv == 3:
+    elif random_ore == 3:
         ore_found = "iron"
-    elif randomv == 4:
+    elif random_ore == 4:
         ore_found = "diamond"
-    elif randomv == 5:
+    elif random_ore == 5:
         ore_found = "emerald"
-    elif randomv == 6:
+    elif random_ore == 6:
         ore_found = "ruby"
-    elif randomv == 7:
+    elif random_ore == 7:
         print("You found nothing!!!")
-
 
     if ore_found:
         user_ores.append(ore_found)
         print(f"You found {ore_found} x{tank}")
 
-
-    if lucky_charm and random.random() < 0.1:  # 10% chance to find a lucky ore
-        user_ores.append("lucky ore")
-        print("You found a lucky ore!")
-
+        if lucky_charm and random.random() < 0.1:  # 10% chance to find a lucky ore
+            user_ores.append("lucky ore")
+            print("You found a lucky ore!")
 
 
-def autominer(user_ores, tank):
-    while auto_miner == True:
-        print("auto miner collected,")
-        mine(user_ores, tank)
 
-        time.sleep(10)
+# def autominer(user_ores, tank, lucky_charm):
+#         print("auto miner collected,")
+#         mine(user_ores, tank, lucky_charm)
+#         time.sleep(10)
 
+def sell(money, drill, deepness, ores):
+    sell_input = input(f'You have {print_ores(ores)}, sell all? (y/n) >>> ').strip().lower()
+    if sell_input == "y":
+        deepnesscoins = max(deepness - 0.7, 0)  # Ensure deepnesscoins is non-negative
+        for ore in ores:
+            if ore == "stone":
+                money += 1 + deepnesscoins
+            elif ore == "coal":
+                money += 2 + deepnesscoins
+            elif ore == "iron":
+                money += 3 + deepnesscoins
+            elif ore == "diamond":
+                money += 4 + deepnesscoins
+            elif ore == "emerald":
+                money += 5 + deepnesscoins
+            elif ore == "ruby":
+                money += 6 + deepnesscoins
+            elif ore == "lucky ore":
+                money += 20 + deepnesscoins
+
+        if not drill == 0:
+            money *= drill
+            print(f"Multiplied money by {drill}!")
+        ores.clear()
+        print(f'You now have ${money:.2f}')
+
+        return money
 
 def main():
+    deepness = 0  # Initialize deepness
     money = 0
     ores = []
     tank = 1
     pickaxe = 0
     drill = 0
+    mining_time = 3
+    lucky_charm = False
 
     # Call the intro once at the start
     intro()
 
     # Game loop
     while True:
-        mining = input("What do you want to do? mine, sell, or buy? (m/s/b) >>> ").strip().lower()
+        mining = input("What do you want to do? mine, sell, or buy? (m/s/b). q to exit >>> ").strip()
+        if mining == "q":
+            break
 
         if mining == "m":
             print(f"Current ores: {print_ores(ores)}")
@@ -80,38 +105,14 @@ def main():
                 countdown -= 1
                 time.sleep(sleep_time)
             print("Mining complete!")
-            mine(ores, tank)
+            mine(ores, tank, lucky_charm)
 
             deepness = round(deepness + 0.1, 1)  # Increase deepness and round to one decimal place
             print(f'Current deepness {deepness}')
             print()
 
         elif mining == "s":
-            sell = input(f'You have {print_ores(ores)}, sell all? (y/n) >>> ').strip().lower()
-            if sell == "y":
-                deepnesscoins = max(deepness - 0.7, 0)  # Ensure deepnesscoins is non-negative
-                total_money = 0
-                for ore in ores:
-                    if ore == "stone":
-                        total_money += 1 + deepnesscoins
-                    elif ore == "coal":
-                        total_money += 2 + deepnesscoins
-                    elif ore == "iron":
-                        total_money += 3 + deepnesscoins
-                    elif ore == "diamond":
-                        total_money += 4 + deepnesscoins
-                    elif ore == "emerald":
-                        total_money += 5 + deepnesscoins
-                    elif ore == "ruby":
-                        total_money += 6 + deepnesscoins
-                    elif ore == "lucky ore":
-                        total_money += 20 + deepnesscoins
-
-                if not drill == 0:
-                    total_money *= drill
-                    print(f"Multiplied money by {drill}!")
-                ores = []
-                print(f'You now have ${money:.2f}')
+            money = sell(money, drill, deepness, ores)
 
         elif mining == "b":
             print("""Welcome to duckmerch.store! What do you wanna buy?
@@ -119,7 +120,7 @@ def main():
                         2. Drill: doubles the money you get from selling (cost: $20)
                         3. Tank: 3x your ores per mining (cost: $50)
                         4. Workers: reduce mining time by 3 seconds (cost: $29)
-                        5. Auto-Miner: mine automatically every 10 seconds (cost: $200)
+                        5. Auto-Miner: mine automatically every 10 seconds(COMING SOON) (cost: $200)
                         6. Lucky Charm: chance to find a lucky ore worth more (cost: $300)
                         7. Escape: Home sweet home! win the game (cost: $10,000)
                         8. Hint: idk y u would buy this, but ig u can?? (cost: $5,000)""")
@@ -154,13 +155,14 @@ def main():
                 else:
                     print("You don't have enough money.")
             elif choice == "5":
-                if money >= 200:
+                print("sorry, coming soon")
+                """if money >= 200:
                     money -= 200
                     auto_miner = True
                     print("You bought an auto-miner!")
-                    autominer(ores, tank)
+                    # autominer(ores, tank, lucky_charm)
                 else:
-                    print("You don't have enough money.")
+                    print("You don't have enough money.")"""
             elif choice == "6":
                 if money >= 300:
                     money -= 300
