@@ -6,7 +6,8 @@ but the ores are more valuable"""
 hint2 = """mine diamond, dimond gud, dimaonf cul,
  diaomnfd shiny ehehHEHehhEHHEEHEHEH EEEEEGEGEGEHEHEHEGE"""
 
-
+deepness = 0
+#deeplist = []
 
 def intro():
     print("""chucky >> welcome! this is chucky's mine!
@@ -16,7 +17,7 @@ def intro():
 def print_ores(ores_array):
     return ', '.join(ores_array) if ores_array else "No ores"
 
-def mine(user_ores, tank=1, lucky_charm=False):
+def mine(deepness,user_ores, tank=1, lucky_charm=False):
     random_ore = random.randint(1, 7)
     ore_found = ""
     if random_ore == 1:
@@ -33,9 +34,10 @@ def mine(user_ores, tank=1, lucky_charm=False):
         ore_found = "ruby"
     elif random_ore == 7:
         print("You found nothing!!!")
-
+    # print(deeplist)
     if ore_found:
         user_ores.append(ore_found)
+       # deeplist.append(deepness)
         print(f"You found {ore_found} x{tank}")
 
         if lucky_charm and random.random() < 0.1:  # 10% chance to find a lucky ore
@@ -49,36 +51,49 @@ def mine(user_ores, tank=1, lucky_charm=False):
 #         mine(user_ores, tank, lucky_charm)
 #         time.sleep(10)
 
-def sell(money, drill, deepness, ores):
+def sell(money, drill, ores):
+    current_money = 0
     sell_input = input(f'You have {print_ores(ores)}, sell all? (y/n) >>> ').strip().lower()
+
     if sell_input == "y":
-        deepnesscoins = max(deepness - 0.7, 0)  # Ensure deepnesscoins is non-negative
+       # deepnesscoins = max(deepness - 0.7, 0)  # Ensure deepnesscoins is non-negative
         for ore in ores:
             if ore == "stone":
-                money += 1 + deepnesscoins
+                current_money += 1 #+ deepnesscoins
             elif ore == "coal":
-                money += 2 + deepnesscoins
+                current_money += 2#  + deepnesscoins
             elif ore == "iron":
-                money += 3 + deepnesscoins
+                current_money += 3 # + deepnesscoins
             elif ore == "diamond":
-                money += 4 + deepnesscoins
+                current_money += 4 # + deepnesscoins
             elif ore == "emerald":
-                money += 5 + deepnesscoins
+                current_money += 5 # + deepnesscoins
             elif ore == "ruby":
-                money += 6 + deepnesscoins
+                current_money += 6 #  + deepnesscoins
             elif ore == "lucky ore":
-                money += 20 + deepnesscoins
-
+                current_money += 20 # + deepnesscoins
+            # for item in range(deeplist):
+            #     print(deeplist[1])
+            #     deeplist.pop(1)
         if not drill == 0:
-            money *= drill
+            current_money *= drill
             print(f"Multiplied money by {drill}!")
+
+        money += current_money
         ores.clear()
         print(f'You now have ${money:.2f}')
+        ores.clear()
 
-        return money
+    # Add this else statement to return money even if no sale is made
+    else:
+        print("No ores sold.")
 
-def main():
-    deepness = 0  # Initialize deepness
+    return money  # Make sure the function always returns 'money'
+
+
+def main(deepness):
+
+     # Initialize deepness
     money = 0
     ores = []
     tank = 1
@@ -105,14 +120,14 @@ def main():
                 countdown -= 1
                 time.sleep(sleep_time)
             print("Mining complete!")
-            mine(ores, tank, lucky_charm)
+            mine(deepness,ores, tank, lucky_charm,)
 
             deepness = round(deepness + 0.1, 1)  # Increase deepness and round to one decimal place
-            print(f'Current deepness {deepness}')
-            print()
+            # print(f'Current deepness {deepness}')
+           #  print()
 
         elif mining == "s":
-            money = sell(money, drill, deepness, ores)
+            money = sell(money, drill,ores)
 
         elif mining == "b":
             print("""Welcome to duckmerch.store! What do you wanna buy?
@@ -189,4 +204,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(deepness)
