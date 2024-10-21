@@ -17,28 +17,50 @@ def intro():
 def print_ores(ores_array):
     return ', '.join(ores_array) if ores_array else "No ores"
 
-def mine(deepness,user_ores, tank=1, lucky_charm=False):
+def mine(deepness,user_ores, tank=0, lucky_charm=False):
     random_ore = random.randint(1, 7)
     ore_found = ""
-    if random_ore == 1:
-        ore_found = "stone"
-    elif random_ore == 2:
-        ore_found = "coal"
-    elif random_ore == 3:
-        ore_found = "iron"
-    elif random_ore == 4:
-        ore_found = "diamond"
-    elif random_ore == 5:
-        ore_found = "emerald"
-    elif random_ore == 6:
-        ore_found = "ruby"
-    elif random_ore == 7:
-        print("You found nothing!!!")
+    if not tank == 0:
+        for i in range(tank):
+            if random_ore == 1:
+                ore_found = "stone"
+            elif random_ore == 2:
+                ore_found = "coal"
+            elif random_ore == 3:
+                ore_found = "iron"
+            elif random_ore == 4:
+                ore_found = "diamond"
+            elif random_ore == 5:
+                ore_found = "emerald"
+            elif random_ore == 6:
+                ore_found = "ruby"
+            elif random_ore == 7:
+                print("You found nothing!!!")
+    else:
+        if random_ore == 1:
+            ore_found = "stone"
+        elif random_ore == 2:
+            ore_found = "coal"
+        elif random_ore == 3:
+            ore_found = "iron"
+        elif random_ore == 4:
+            ore_found = "diamond"
+        elif random_ore == 5:
+            ore_found = "emerald"
+        elif random_ore == 6:
+            ore_found = "ruby"
+        elif random_ore == 7:
+            print("You found nothing!!!")
+
     # print(deeplist)
     if ore_found:
         user_ores.append(ore_found)
        # deeplist.append(deepness)
-        print(f"You found {ore_found} x{tank}")
+        if tank:
+            print(f"You found {ore_found} x{tank}")
+        else:
+            print(f"You found {ore_found} ")
+
 
         if lucky_charm and random.random() < 0.1:  # 10% chance to find a lucky ore
             user_ores.append("lucky ore")
@@ -96,7 +118,7 @@ def main(deepness):
      # Initialize deepness
     money = 0
     ores = []
-    tank = 1
+    tank = 0
     pickaxe = 0
     drill = 0
     mining_time = 3
@@ -133,7 +155,7 @@ def main(deepness):
             print("""Welcome to duckmerch.store! What do you wanna buy?
                         1. Pickaxe: reduce mining time by 0.5 seconds (cost: $5)
                         2. Drill: doubles the money you get from selling (cost: $20)
-                        3. Tank: 3x your ores per mining (cost: $50)
+                        3. Tank: 2x your ores per mining (cost: $50)
                         4. Workers: reduce mining time by 3 seconds (cost: $29)
                         5. Auto-Miner: mine automatically every 10 seconds(COMING SOON) (cost: $200)
                         6. Lucky Charm: chance to find a lucky ore worth more (cost: $300)
@@ -158,7 +180,7 @@ def main(deepness):
             elif choice == "3":
                 if money >= 50:
                     money -= 50
-                    tank += 3  # Increase tank multiplier
+                    tank += 1  # Increase tank multiplier
                     print("You bought a tank!")
                 else:
                     print("You don't have enough money.")
