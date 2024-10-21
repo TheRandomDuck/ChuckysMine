@@ -129,7 +129,7 @@ def main(deepness):
 
     # Game loop
     while True:
-        mining = input("What do you want to do? mine, sell, or buy? (m/s/b). q to exit >>> ").strip()
+        mining = input("What do you want to do? mine, sell,stats or buy? (m/s/st/b). q to exit >>> ").strip()
         if mining == "q":
             break
 
@@ -180,14 +180,14 @@ def main(deepness):
             elif choice == "3":
                 if money >= 50:
                     money -= 50
-                    tank += 1  # Increase tank multiplier
+                    tank += 2 # Increase tank multiplier
                     print("You bought a tank!")
                 else:
                     print("You don't have enough money.")
             elif choice == "4":
                 if money >= 29:
                     money -= 29
-                    pickaxe += 3
+                    pickaxe += 6
                     print("You bought workers!")
                 else:
                     print("You don't have enough money.")
@@ -221,6 +221,14 @@ def main(deepness):
                     print("I mean, you bought it, so like don't complain")
                 else:
                     print("You don't have enough money.")
+        elif mining == "st":
+            print(f"""stats:
+current pickaxes: {pickaxe}
+current deepness: {deepness}
+current drills: {drill}
+current tanks: {tank}
+current money: {money}""")
+
         else:
             print("Invalid option. Please choose 'm', 's', or 'b'.")
 
